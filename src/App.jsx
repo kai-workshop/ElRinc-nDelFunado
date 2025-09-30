@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload, Trash2, Search, Eye, Download, Lock, LogOut, Menu, X, BookOpen, Library } from 'lucide-react';
 
 export default function App() {
@@ -65,7 +65,6 @@ export default function App() {
       return;
     }
 
-    // Convertir archivo a base64
     const reader = new FileReader();
     reader.onload = async (e) => {
       try {
@@ -119,7 +118,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Fondo animado */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
         <div className="absolute w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 right-0"></div>
@@ -144,11 +142,9 @@ export default function App() {
       `}</style>
 
       <div className="relative z-10">
-        {/* Header/Navbar */}
         <nav className="bg-gray-900 bg-opacity-90 backdrop-blur-lg border-b border-gray-800 sticky top-0 z-50">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between h-16">
-              {/* Logo y título */}
               <div className="flex items-center gap-3">
                 <div className="bg-gradient-to-br from-purple-500 to-pink-500 p-2 rounded-lg">
                   <BookOpen className="w-6 h-6" />
@@ -156,7 +152,6 @@ export default function App() {
                 <h1 className="text-xl font-bold text-white">El Rincón Del Funado</h1>
               </div>
 
-              {/* Botones desktop */}
               <div className="hidden md:flex items-center gap-4">
                 <button
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -191,7 +186,6 @@ export default function App() {
                 )}
               </div>
 
-              {/* Botones móvil */}
               <div className="flex md:hidden items-center gap-2">
                 <button
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -210,7 +204,6 @@ export default function App() {
           </div>
         </nav>
 
-        {/* Menú lateral */}
         {showMenu && (
           <div className="fixed inset-0 z-50">
             <div className="absolute inset-0 bg-black bg-opacity-70" onClick={() => setShowMenu(false)}></div>
@@ -283,7 +276,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Modal de login */}
         {showLoginModal && (
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
             <div className="bg-gray-900 rounded-lg p-8 max-w-md w-full border border-gray-800">
@@ -319,9 +311,7 @@ export default function App() {
           </div>
         )}
 
-        {/* Contenido principal */}
         <div className="container mx-auto px-4 py-8">
-          {/* Barra de búsqueda */}
           <div className="max-w-2xl mx-auto mb-8">
             <div className="relative">
               <Search className="absolute left-4 top-3.5 text-gray-400 w-5 h-5" />
@@ -335,7 +325,6 @@ export default function App() {
             </div>
           </div>
 
-          {/* Botón de subir (solo para admin) */}
           {isAdmin && (
             <div className="text-center mb-8">
               <button
@@ -348,7 +337,6 @@ export default function App() {
             </div>
           )}
 
-          {/* Modal de subida */}
           {showUploadModal && (
             <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
               <div className="bg-gray-900 rounded-lg p-8 max-w-md w-full border border-gray-800">
@@ -391,7 +379,6 @@ export default function App() {
             </div>
           )}
 
-          {/* Lista de documentos */}
           <div className="max-w-6xl mx-auto">
             {loading ? (
               <div className="text-center text-gray-400 py-12">
@@ -421,7 +408,7 @@ export default function App() {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        
+                        <a
                           href={doc.fileUrl}
                           target="_blank"
                           rel="noopener noreferrer"
@@ -430,9 +417,9 @@ export default function App() {
                           <Eye className="w-4 h-4" />
                           Ver
                         </a>
-                        
+                        <a
                           href={doc.fileUrl}
-                          download={`${doc.title}.pdf`}
+                          download={doc.title + '.pdf'}
                           className="flex-1 flex items-center justify-center gap-2 bg-blue-600 py-2 rounded-lg hover:bg-blue-700 transition text-sm"
                         >
                           <Download className="w-4 h-4" />
