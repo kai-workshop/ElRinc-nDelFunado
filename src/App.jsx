@@ -9,6 +9,8 @@ export default function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showPdfViewer, setShowPdfViewer] = useState(false);
+  const [currentPdf, setCurrentPdf] = useState(null);
   const [newDoc, setNewDoc] = useState({ title: '', ageRestriction: '', file: null });
   const [loading, setLoading] = useState(true);
 
@@ -110,6 +112,18 @@ export default function App() {
     } catch (error) {
       alert('Error al eliminar el documento');
     }
+  };
+
+  const handleViewPdf = (doc) => {
+    setCurrentPdf(doc);
+    setShowPdfViewer(true);
+  };
+
+  const handleDownload = (doc) => {
+    const link = document.createElement('a');
+    link.href = doc.fileUrl;
+    link.download = doc.title + '.pdf';
+    link.click();
   };
 
   const filteredDocs = documents.filter(doc =>
@@ -311,6 +325,28 @@ export default function App() {
           </div>
         )}
 
+        {showPdfViewer && currentPdf && (
+          <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col">
+            <div className="bg-gray-900 p-4 flex items-center justify-between border-b border-gray-800">
+              <h3 className="text-xl font-bold">{currentPdf.title}</h3>
+              <button
+                onClick={() => {
+                  setShowPdfViewer(false);
+                  setCurrentPdf(null);
+                }}
+                className="p-2 hover:bg-gray-800 rounded-lg transition"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <iframe
+              src={currentPdf.fileUrl}
+              className="w-full flex-1"
+              title={currentPdf.title}
+            />
+          </div>
+        )}
+
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto mb-8">
             <div className="relative">
@@ -408,23 +444,20 @@ export default function App() {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <a
-                          href={doc.fileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <button
+                          onClick={() => handleViewPdf(doc)}
                           className="flex-1 flex items-center justify-center gap-2 bg-purple-600 py-2 rounded-lg hover:bg-purple-700 transition text-sm"
                         >
                           <Eye className="w-4 h-4" />
                           Ver
-                        </a>
-                        <a
-                          href={doc.fileUrl}
-                          download={doc.title + '.pdf'}
+                        </button>
+                        <button
+                          onClick={() => handleDownload(doc)}
                           className="flex-1 flex items-center justify-center gap-2 bg-blue-600 py-2 rounded-lg hover:bg-blue-700 transition text-sm"
                         >
                           <Download className="w-4 h-4" />
                           Descargar
-                        </a>
+                        </button>
                         {isAdmin && (
                           <button
                             onClick={() => handleDelete(doc.id)}
